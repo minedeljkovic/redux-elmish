@@ -2,19 +2,22 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createStore, compose } from 'redux';
 import { Provider, connect } from 'react-redux';
-import { install, mapDispatchToAddress } from 'tcomb-redux-elm';
 
-export default (containerDomId, init, update, View, Msg) => {
+export default (containerDomId, init, update, View) => {
+  function reducer(state, action) {
+    if (state === undefined) return init();
+    return update(state, action);
+  }
+
   const storeFactory = compose(
-    install(init, Msg, {devToolsMsg: true}),
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )(createStore);
 
-  const store = storeFactory(update);
+  const store = storeFactory(reducer);
 
   const ConnectedView = connect(appState => ({
     model: appState
-  }), mapDispatchToAddress)(View);
+  }))(View);
 
   render((
     <Provider store={store}>

@@ -1,30 +1,29 @@
-import t from 'tcomb';
+// @flow
+
 import React from 'react';
-import {tag, union, elmView} from 'tcomb-redux-elm';
+import type {Dispatch} from './dispatch';
+import view from './view';
 
 // MODEL
-const Model = t.Number;
+export type Model = number;
 
-function init(count = 0: t.Number): Model { return count; }
+const init = (count: number = 0): Model => count;
 
 // UPDATE
+export type Action
+  = { type: 'Increment' }
+  | { type: 'Decrement' }
+;
 
-const Increment = tag('Increment');
-const Decrement = tag('Decrement');
-const Msg = union(Increment, Decrement);
-
-function update(model: Model, msg: Msg): Model {
-  return Msg.match(msg,
-
-    Increment, () => model + 1,
-
-    Decrement, () => model - 1
-
-  );
+const update = (model: Model, action: Action): Model => {
+  switch (action.type) {
+  case 'Increment': return model + 1;
+  case 'Decrement': return model - 1;
+  default: throw new Error('Unknown action')
+  }
 }
 
 // VIEW
-
 const countStyle = {
   fontSize: '20px',
   fontFamily: 'monospace',
@@ -33,12 +32,67 @@ const countStyle = {
   textAlign: 'center'
 };
 
-const view = elmView(({ model, address }) => (
+type Props = {
+  model: Model,
+  dispatch: Dispatch<Action>
+};
+
+export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
   <div>
-    <button onClick={() => address(Decrement)}>-</button>
+    <button onClick={() => dispatch({ type: 'Decrement' })}>-</button>
     <div style={countStyle}>{model}</div>
-    <button onClick={() => address(Increment)}>+</button>
+    <button onClick={() => dispatch({ type: 'Increment' })}>+</button>
   </div>
 ));
 
-export default { Model, init, Msg, update, view };
+export default { init, update };
+
+/*
+export const View = ({ model, dispatch }: Props) => (
+  <div>
+    <button onClick={() => dispatch({ type: 'Increment' })}>-</button>
+    <div style={countStyle}>{model}</div>
+    <button onClick={() => dispatch({ type: 'Decrement' })}>+</button>
+  </div>
+);
+*/
+
+/*
+export class View extends React.Component {
+  props: Props;
+
+  render() {
+    const {model, dispatch} = this.props;
+    <div>
+      <button onClick={() => dispatch({ type: 'Increment' })}>-</button>
+      <div style={countStyle}>{model}</div>
+      <button onClick={() => dispatch({ type: 'Decrement' })}>+</button>
+    </div>
+  }
+}
+*/
+
+/*
+class Counter extends React.Component {
+  props: Props;
+
+  render() {
+    const {model, dispatch} = this.props;
+    <div>
+      <button onClick={() => dispatch({ type: 'Increment' })}>-</button>
+      <div style={countStyle}>{model}</div>
+      <button onClick={() => dispatch({ type: 'Decrement' })}>+</button>
+    </div>
+  }
+}
+
+class Counter1 extends React.Component {
+  props: {};
+
+  render() {
+    <div>Bla</div>
+  }
+}
+
+export const View = view(Counter1);
+*/

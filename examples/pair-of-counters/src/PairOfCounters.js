@@ -1,17 +1,20 @@
-import t from 'tcomb';
-import React from 'react';
-import {tag, union, elmView} from 'tcomb-redux-elm';
+// @flow
 
-import Counter from './Counter';
+import React from 'react';
+import type {Dispatch} from './dispatch';
+import {forwardTo} from './dispatch';
+import view from './view';
+
+import type {Model as CounterModel, Action as CounterAction} from './Counter';
+import Counter, {View as CounterView}  from './Counter';
 
 // MODEL
+export type Model = {
+  topCounter: CounterModel,
+  bottomCounter: CounterModel
+};
 
-const Model = t.interface({
-  topCounter: Counter.Model,
-  bottomCounter: Counter.Model
-})
-
-function init(topCount = 0: t.Number, bottomCount = 0: t.Number): Model { 
+function init(topCount: number = 0, bottomCount: number = 0): Model {
   return {
     topCounter: Counter.init(topCount),
     bottomCounter: Counter.init(bottomCount)
@@ -19,38 +22,34 @@ function init(topCount = 0: t.Number, bottomCount = 0: t.Number): Model {
 }
 
 // UPDATE
+export type Action
+  = { type: 'Reset' }
+  | { type: 'TopCounter', subAction: CounterAction }
+  | { type: 'BottomCounter', subAction: CounterAction }
+;
 
-const Reset = tag('Reset');
-const TopCounter = tag('TopCounter', Counter.Msg);
-const BottomCounter = tag('BottomCounter', Counter.Msg);
-const Msg = union(Reset, TopCounter, BottomCounter);
-
-function update(model: Model, msg: Msg): Model {
-  return Msg.match(msg,
-
-    Reset, () => init(),
-
-    TopCounter, msg => ({
-      ...model,
-      topCounter: Counter.update(model.topCounter, msg)
-    }),
-
-    BottomCounter, msg => ({
-      ...model,
-      bottomCounter: Counter.update(model.bottomCounter, msg)
-    })
-
-  );
+function update(model: Model, action: Action): Model {
+  switch (action.type) {
+  case 'Reset': return init();
+  case 'TopCounter': return {...model, topCounter: Counter.update(model.topCounter, action.subAction)};
+  case 'BottomCounter': return {...model, bottomCounter: Counter.update(model.bottomCounter, action.subAction)};
+  default: throw new Error('Unknown action');
+  }
 }
 
 // VIEW
+type Props = {
+  model: Model,
+  dispatch: Dispatch<Action>
+};
 
-const view = elmView(({ model, address, forwardTo }) => (
+
+export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: { model: Model, dispatch: Dispatch<Action> }) => (
   <div>
-    <Counter.view model={model.topCounter} address={forwardTo(TopCounter)} />
-    <Counter.view model={model.bottomCounter} address={forwardTo(BottomCounter)} />
-    <button onClick={() => address(Reset)}>RESET</button>
+    <CounterView model={model.topCounter} dispatch={forwardTo(dispatch, subAction => ({ type: 'TopCounter', subAction }))} />
+    <CounterView model={model.bottomCounter} dispatch={forwardTo(dispatch, subAction => ({ type: 'BottomCounter', subAction }))} />
+    <button onClick={() => dispatch({ type: 'Reset' })}>RESET</button>
   </div>
 ));
 
-export default { Model, init, Msg, update, view };
+export default { init, update };
