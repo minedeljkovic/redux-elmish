@@ -1,5 +1,9 @@
 import { install as loopInstall, loop, Effects } from 'redux-loop';
 
+function isReduxAction(action) {
+  return (action.type != null) && (action.type.indexOf('@@redux/') === 0 || action.type === '@@INIT');
+}
+
 function toReduxLoopEffect(effect) {
   switch(effect.type) {
     case 'NONE': return Effects.none();
@@ -26,7 +30,7 @@ function toReduxLoop(reduction) {
 
 export function hotReducer(init, update) {
   return (state, action) => {
-    if (action.type === '@@INIT') return toReduxLoop(init());
+    if (isReduxAction(action)) return toReduxLoop(init());
     return toReduxLoop(update(state, action));
   }
 }
@@ -35,7 +39,7 @@ export default function install(init) {
   return (createStore) => (update, initialState, enhancer) => {
     initialState = initialState || toReduxLoop(init());
     function reducer(state, action) {
-      if (action.type === '@@INIT') return state;
+      if (isReduxAction(action)) return state;
       return toReduxLoop(update(state, action));
     }
 
