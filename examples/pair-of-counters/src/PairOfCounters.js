@@ -44,7 +44,7 @@ type Props = {
 };
 
 
-export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: { model: Model, dispatch: Dispatch<Action> }) => (
+export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
   <div>
     <CounterView model={model.topCounter} dispatch={forwardTo(dispatch, subAction => ({ type: 'TopCounter', subAction }))} />
     <CounterView model={model.bottomCounter} dispatch={forwardTo(dispatch, subAction => ({ type: 'BottomCounter', subAction }))} />
