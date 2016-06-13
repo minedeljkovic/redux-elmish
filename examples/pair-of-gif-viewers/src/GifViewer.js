@@ -26,23 +26,20 @@ const getRandomGif = (topic) => {
 }
 
 const init = (topic: string = 'cats'): [Model, Effect<Action>] => [
-  {
-    topic,
-    gifUrl: "waiting.gif"
-  },
+  { topic, gifUrl: "waiting.gif" },
   getRandomGif(topic)
 ];
 
 // UPDATE
 export type Action
-  = { type: 'LoadAnother' }
+  = { type: 'MorePlease' }
   | { type: 'FetchSucceed', gifUrl: string }
   | { type: 'FetchFail', error: any }
 ;
 
 const update = (model: Model, action: Action): [Model, Effect<Action>] => {
   switch (action.type) {
-  case 'LoadAnother': return [
+  case 'MorePlease': return [
     model,
     getRandomGif(model.topic)
   ];
@@ -54,21 +51,30 @@ const update = (model: Model, action: Action): [Model, Effect<Action>] => {
     model,
     Effects.none()
   ]
-  default: throw new Error('Unknown action')
+  default: throw new Error(`Unknown action type ${action.type}`)
   }
 }
 
 // VIEW
+const imgStyle = url => ({
+  display: 'inline-block',
+  width: 200,
+  height: 200,
+  backgroundPosition: 'center center',
+  backgroundSize: 'cover',
+  backgroundImage: 'url(' + url + ')'
+});
+
 type Props = {
   model: Model,
   dispatch: Dispatch<Action>
 };
 
 export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
-  <div style={{ width: '200px' }}>
-    <h2 style={{ width: '200px', textAlign: 'center' }}>{model.topic}</h2>
-    <img role="presentation" src={model.gifUrl} width="200" height="200" />
-    <button onClick={() => dispatch({ type: 'LoadAnother' })}>More Please!</button>
+  <div>
+    <h2>{model.topic}</h2>
+    <img style={imgStyle(model.gifUrl)} />
+    <button onClick={() => dispatch({ type: 'MorePlease' })}>More Please!</button>
   </div>
 ));
 

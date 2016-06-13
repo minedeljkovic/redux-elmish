@@ -22,35 +22,35 @@ export const init = (leftTopic: string = 'funny cats', rightTopic: string = 'fun
   return [
     { left, right },
     Effects.batch([
-      Effects.map(leftFx, subAction => ({ type: 'Left', subAction })),
-      Effects.map(leftFx, subAction => ({ type: 'Right', subAction }))
+      Effects.map(leftFx, leftAction => ({ type: 'Left', leftAction })),
+      Effects.map(leftFx, rightAction => ({ type: 'Right', rightAction }))
     ])
   ];
 }
 
 // UPDATE
 export type Action
-  = { type: 'Left', subAction: GifViewerAction }
-  | { type: 'Right', subAction: GifViewerAction }
+  = { type: 'Left', leftAction: GifViewerAction }
+  | { type: 'Right', rightAction: GifViewerAction }
 ;
 
 export const update = (model: Model, action: Action): [Model, Effect<Action>] => {
   switch(action.type) {
   case 'Left': {
-    const [left, leftFx] = GifViewer.update(model.left, action.subAction);
+    const [left, leftFx] = GifViewer.update(model.left, action.leftAction);
     return [
       { ...model, left },
-      Effects.map(leftFx, subAction => ({ type: 'Left', subAction }))
+      Effects.map(leftFx, leftAction => ({ type: 'Left', leftAction }))
     ];
   }
   case 'Right': {
-    const [right, rightFx] = GifViewer.update(model.right, action.subAction);
+    const [right, rightFx] = GifViewer.update(model.right, action.rightAction);
     return [
       { ...model, right },
-      Effects.map(rightFx, subAction => ({ type: 'Right', subAction }))
+      Effects.map(rightFx, rightAction => ({ type: 'Right', rightAction }))
     ];
   }
-  default: throw new Error('Unknown action');
+  default: throw new Error(`Unknown action type ${action.type}`)
   }
 }
 
@@ -63,8 +63,8 @@ type Props = {
 
 export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
   <div style={{display: 'flex'}}>
-    <GifViewerView model={model.left} dispatch={forwardTo(dispatch, subAction => ({ type: 'Left', subAction }))} />
-    <GifViewerView model={model.right} dispatch={forwardTo(dispatch, subAction => ({ type: 'Right', subAction }))} />
+    <GifViewerView model={model.left} dispatch={forwardTo(dispatch, leftAction => ({ type: 'Left', leftAction }))} />
+    <GifViewerView model={model.right} dispatch={forwardTo(dispatch, rightAction => ({ type: 'Right', rightAction }))} />
   </div>
 ));
 
