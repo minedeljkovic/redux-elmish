@@ -1,6 +1,6 @@
 import Effects from './effects';
 import run from './boilerplate';
 
-import PairOfCounters, {View as PairOfCountersView} from './PairOfCounters';
+import CounterPair, {View as CounterPairView} from './CounterPair';
 
-run('app', () => [PairOfCounters.init(), Effects.none()], (state, action) => [PairOfCounters.update(state, action), Effects.none()], PairOfCountersView);
+run('app', () => [CounterPair.init(), Effects.none()], (state, action) => [CounterPair.update(state, action), Effects.none()], CounterPairView);
