@@ -24,16 +24,16 @@ function init(topCount: number = 0, bottomCount: number = 0): Model {
 // UPDATE
 export type Action
   = { type: 'Reset' }
-  | { type: 'TopCounter', subAction: CounterAction }
-  | { type: 'BottomCounter', subAction: CounterAction }
+  | { type: 'Top', topAction: CounterAction }
+  | { type: 'Bottom', bottomAction: CounterAction }
 ;
 
 function update(model: Model, action: Action): Model {
   switch (action.type) {
-  case 'Reset': return init();
-  case 'TopCounter': return {...model, topCounter: Counter.update(model.topCounter, action.subAction)};
-  case 'BottomCounter': return {...model, bottomCounter: Counter.update(model.bottomCounter, action.subAction)};
-  default: throw new Error('Unknown action');
+  case 'Reset': return init(0, 0);
+  case 'Top': return {...model, topCounter: Counter.update(model.topCounter, action.topAction)};
+  case 'Bottom': return {...model, bottomCounter: Counter.update(model.bottomCounter, action.bottomAction)};
+  default: throw new Error(`Unknown action type ${action.type}`);
   }
 }
 
@@ -46,8 +46,8 @@ type Props = {
 
 export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
   <div>
-    <CounterView model={model.topCounter} dispatch={forwardTo(dispatch, subAction => ({ type: 'TopCounter', subAction }))} />
-    <CounterView model={model.bottomCounter} dispatch={forwardTo(dispatch, subAction => ({ type: 'BottomCounter', subAction }))} />
+    <CounterView model={model.topCounter} dispatch={forwardTo(dispatch, topAction => ({ type: 'Top', topAction }))} />
+    <CounterView model={model.bottomCounter} dispatch={forwardTo(dispatch, bottomAction => ({ type: 'Bottom', bottomAction }))} />
     <button onClick={() => dispatch({ type: 'Reset' })}>RESET</button>
   </div>
 ));

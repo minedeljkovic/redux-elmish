@@ -19,16 +19,16 @@ const update = (model: Model, action: Action): Model => {
   switch (action.type) {
   case 'Increment': return model + 1;
   case 'Decrement': return model - 1;
-  default: throw new Error('Unknown action')
+  default: throw new Error(`Unknown action type ${action.type}`);
   }
 }
 
 // VIEW
 const countStyle = {
-  fontSize: '20px',
+  fontSize: 20,
   fontFamily: 'monospace',
   display: 'inline-block',
-  width: '50px',
+  width: 50,
   textAlign: 'center'
 };
 
