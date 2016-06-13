@@ -13,7 +13,7 @@ export type Model = {
 };
 
 const decodeGifUrl = (json) => {
-  return json.data.image_url;
+  return (json.data.image_url: string);
 }
 
 const getRandomGif = (topic) => {
