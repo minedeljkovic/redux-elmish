@@ -3,35 +3,67 @@
 type PromiseEffect<TAction> = {
   type: 'PROMISE',
   factory: () => Promise,
-  successActionCtor: (result: any) => TAction,
-  failActionCtor: (error: any) => TAction
+  successTagger: (result: any) => TAction,
+  failTagger: (error: any) => TAction
 };
 
 type NoneEffect = {
   type: 'NONE'
 };
 
-type LiftEffect = {
-  type: 'LIFT',
+type MappedEffect<TAction> = {
+  type: 'MAP',
   effect: Effect,
-  factory: function
+  tagger: (action: any) => TAction
 };
 
-export type Effect<TAction> = PromiseEffect<TAction> | NoneEffect | LiftEffect;
+type BatchEffect<TAction> = {
+  type: 'BATCH',
+  effects: Effect<TAction>[]
+};
 
-export function promiseEffect<TAction, TPromiseResult>(
+export type Effect<TAction> = PromiseEffect<TAction> | NoneEffect | MappedEffect<TAction> | BatchEffect<TAction>;
+
+function promise<TAction, TPromiseResult>(
   promiseFactory: () => Promise<TPromiseResult>,
-  successActionCtor: (result: TPromiseResult) => TAction,
-  failActionCtor: (error: any) => TAction
+  successTagger: (result: TPromiseResult) => TAction,
+  failTagger: (error: any) => TAction
 ): Effect<TAction> {
-  const factory = () => {
-    return promiseFactory()
-      .then(result => successActionCtor(result), error => failActionCtor(error))
-  }
   return {
     type: 'PROMISE',
     factory: promiseFactory,
-    successActionCtor,
-    failActionCtor
+    successTagger,
+    failTagger
   };
+}
+
+function none(): NoneEffect {
+  return {
+    type: 'NONE'
+  }
+}
+
+function map<TAction, TTagAction>(
+  effect: Effect<TAction>,
+  tagger: (action: TAction) => TTagAction
+): Effect<TTagAction> {
+  return {
+    type: 'MAP',
+    effect,
+    tagger
+  };
+}
+
+function batch<TAction>(effects: Effect<TAction>[]): Effect<TAction> {
+  return {
+    type: 'BATCH',
+    effects
+  }
+}
+
+export default {
+  promise,
+  none,
+  map,
+  batch
 }

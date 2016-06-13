@@ -1,5 +1,5 @@
 import run from './boilerplate';
 
-import PairOfCounters, {View as PairOfCountersView} from './PairOfCounters';
+import PairOfGifViewers, {View as PairOfGifViewersView} from './PairOfGifViewers';
 
-run('app', PairOfCounters.init, PairOfCounters.update, PairOfCountersView);
+run('app', PairOfGifViewers.init, PairOfGifViewers.update, PairOfGifViewersView);
