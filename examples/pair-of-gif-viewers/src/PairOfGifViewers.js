@@ -50,7 +50,7 @@ export const update = (model: Model, action: Action): [Model, Effect<Action>] =>
       Effects.map(rightFx, rightAction => ({ type: 'Right', rightAction }))
     ];
   }
-  default: throw new Error(`Unknown action type ${action.type}`)
+  default: throw new Error(`Unknown action type ${action.type}`);
   }
 }
 
