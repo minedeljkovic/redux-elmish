@@ -25,10 +25,10 @@ const update = (model: Model, action: Action): Model => {
 
 // VIEW
 const countStyle = {
-  fontSize: 20,
+  fontSize: '20px',
   fontFamily: 'monospace',
   display: 'inline-block',
-  width: 50,
+  width: '50px',
   textAlign: 'center'
 };
 

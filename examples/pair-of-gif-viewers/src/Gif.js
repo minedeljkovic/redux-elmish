@@ -58,8 +58,8 @@ const update = (model: Model, action: Action): [Model, Effect<Action>] => {
 // VIEW
 const imgStyle = url => ({
   display: 'inline-block',
-  width: 200,
-  height: 200,
+  width: '200px',
+  height: '200px',
   backgroundPosition: 'center center',
   backgroundSize: 'cover',
   backgroundImage: 'url(' + url + ')'
