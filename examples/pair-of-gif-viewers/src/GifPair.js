@@ -7,18 +7,18 @@ import view from './view';
 import type {Effect} from './effects';
 import Effects from './effects';
 
-import type {Model as GifViewerModel, Action as GifViewerAction} from './GifViewer';
-import GifViewer, {View as GifViewerView} from './GifViewer';
+import type {Model as GifModel, Action as GifAction} from './Gif';
+import Gif, {View as GifView} from './Gif';
 
 // MODEL
 export type Model = {
-  left: GifViewerModel,
-  right: GifViewerModel
+  left: GifModel,
+  right: GifModel
 };
 
 export const init = (leftTopic: string = 'funny cats', rightTopic: string = 'funny dogs'): [Model, Effect<Action>] => {
-  const [left, leftFx] = GifViewer.init(leftTopic);
-  const [right, rightFx] = GifViewer.init(rightTopic);
+  const [left, leftFx] = Gif.init(leftTopic);
+  const [right, rightFx] = Gif.init(rightTopic);
   return [
     { left, right },
     Effects.batch([
@@ -30,21 +30,21 @@ export const init = (leftTopic: string = 'funny cats', rightTopic: string = 'fun
 
 // UPDATE
 export type Action
-  = { type: 'Left', leftAction: GifViewerAction }
-  | { type: 'Right', rightAction: GifViewerAction }
+  = { type: 'Left', leftAction: GifAction }
+  | { type: 'Right', rightAction: GifAction }
 ;
 
 export const update = (model: Model, action: Action): [Model, Effect<Action>] => {
   switch(action.type) {
   case 'Left': {
-    const [left, leftFx] = GifViewer.update(model.left, action.leftAction);
+    const [left, leftFx] = Gif.update(model.left, action.leftAction);
     return [
       { ...model, left },
       Effects.map(leftFx, leftAction => ({ type: 'Left', leftAction }))
     ];
   }
   case 'Right': {
-    const [right, rightFx] = GifViewer.update(model.right, action.rightAction);
+    const [right, rightFx] = Gif.update(model.right, action.rightAction);
     return [
       { ...model, right },
       Effects.map(rightFx, rightAction => ({ type: 'Right', rightAction }))
@@ -63,8 +63,8 @@ type Props = {
 
 export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
   <div style={{display: 'flex'}}>
-    <GifViewerView model={model.left} dispatch={forwardTo(dispatch, leftAction => ({ type: 'Left', leftAction }))} />
-    <GifViewerView model={model.right} dispatch={forwardTo(dispatch, rightAction => ({ type: 'Right', rightAction }))} />
+    <GifView model={model.left} dispatch={forwardTo(dispatch, leftAction => ({ type: 'Left', leftAction }))} />
+    <GifView model={model.right} dispatch={forwardTo(dispatch, rightAction => ({ type: 'Right', rightAction }))} />
   </div>
 ));
 
