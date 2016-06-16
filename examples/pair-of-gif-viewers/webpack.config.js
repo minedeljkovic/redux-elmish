@@ -9,6 +9,7 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   entry: [
+    'react-hot-loader/patch',
     'babel-polyfill',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',

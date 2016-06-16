@@ -1,11 +1,8 @@
 // @flow
 
 import React from 'react';
-import type {Dispatch} from './dispatch';
-import {forwardTo} from './dispatch';
-import view from './view';
-import type {Effect} from './effects';
-import Effects from './effects';
+import type {Dispatch, Effect, PureView} from 'redux-elmish';
+import {view, Effects, forwardTo} from 'redux-elmish';
 
 import type {Model as GifModel, Action as GifAction} from './Gif';
 import Gif, {View as GifView} from './Gif';
@@ -61,7 +58,7 @@ type Props = {
 };
 
 
-export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
+export const View: PureView<Props> = view(({ model, dispatch }) => (
   <div style={{display: 'flex'}}>
     <GifView model={model.left} dispatch={forwardTo(dispatch, leftAction => ({ type: 'Left', leftAction }))} />
     <GifView model={model.right} dispatch={forwardTo(dispatch, rightAction => ({ type: 'Right', rightAction }))} />

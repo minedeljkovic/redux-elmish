@@ -1,10 +1,8 @@
 // @flow
 
 import React from 'react';
-import type {Dispatch} from './dispatch';
-import view from './view';
-import type {Effect} from './effects';
-import Effects from './effects';
+import type {Dispatch, Effect, PureView} from 'redux-elmish';
+import {view, Effects} from 'redux-elmish';
 
 // MODEL
 export type Model = {
@@ -26,7 +24,7 @@ const getRandomGif = (topic) => {
 }
 
 const init = (topic: string = 'cats'): [Model, Effect<Action>] => [
-  { topic, gifUrl: "waiting.gif" },
+  { topic, gifUrl: 'waiting.gif' },
   getRandomGif(topic)
 ];
 
@@ -70,7 +68,7 @@ type Props = {
   dispatch: Dispatch<Action>
 };
 
-export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
+export const View: PureView<Props> = view(({ model, dispatch }) => (
   <div>
     <h2>{model.topic}</h2>
     <img style={imgStyle(model.gifUrl)} />
