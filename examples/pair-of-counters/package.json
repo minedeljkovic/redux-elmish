@@ -1,5 +1,5 @@
 {
-  "name": "tcomb-redux-elm-pair-of-counters",
+  "name": "redux-elmish-elm-pair-of-counters",
   "version": "0.1.0",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --config webpack.config.js --port 3000 --hot --content-base ./",

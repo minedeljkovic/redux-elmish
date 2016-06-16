@@ -1,1 +1,1 @@
-# tcomb-redux-elm
+# The Elm Architecture in Redux, statically checked using flow
