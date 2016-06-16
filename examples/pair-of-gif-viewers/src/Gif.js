@@ -24,7 +24,7 @@ const getRandomGif = (topic) => {
 }
 
 const init = (topic: string = 'cats'): [Model, Effect<Action>] => [
-  { topic, gifUrl: 'waiting.gif' },
+  { topic, gifUrl: '/assets/waiting.gif' },
   getRandomGif(topic)
 ];
 
