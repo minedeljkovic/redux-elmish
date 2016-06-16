@@ -96,6 +96,14 @@ type Props = {
   dispatch: Dispatch<Action>
 };
 
+const GifItem = ({id, model, dispatch}) => (
+  <GifView
+    key={id}
+    model={model}
+    dispatch={forwardTo(dispatch, gifAction => ({ type: 'Modify', id, gifAction }))}
+  />
+);
+
 export const View: PureView<Props> = view(({ model, dispatch }) => (
   <div>
     <input
@@ -106,7 +114,7 @@ export const View: PureView<Props> = view(({ model, dispatch }) => (
       style={inputStyle}
     />
     <div style={{display: 'flex', flexWrap: 'wrap'}}>
-      {model.gifs.map(({id, model}) => <GifView model={model} dispatch={forwardTo(dispatch, gifAction => ({ type: 'Modify', id, gifAction }))} />)}
+      {model.gifs.map(gif => <GifItem id={gif.id} model={gif.model} dispatch={dispatch} />)}
     </div>
   </div>
 ));
