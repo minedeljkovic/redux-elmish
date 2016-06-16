@@ -23,6 +23,7 @@ Please check the [examples](./examples)
 At the moment this is just an experiment, so if you would like to play with [examples](./examples) use [npm link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears):
 
 ```
+npm run build:lib
 npm link
 /examples/pair-of-counters/ npm link redux-elmish
 ```
