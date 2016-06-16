@@ -14,7 +14,7 @@ Following parts are statically type checked with flow:
 Slight variation implemented on top of [redux-loop](https://github.com/raisemarketplace/redux-loop), so it can be statically type-checked.
 
 ## Devtools
-Full hot reload and time travel compatibility. Keeping it that way is of ** high priority **
+Full hot reload and time travel compatibility. Keeping it that way is of **high priority**
 
 *TODO: Tagged actions pretty print*
 
