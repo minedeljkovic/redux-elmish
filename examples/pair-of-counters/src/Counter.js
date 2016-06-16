@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import type {Dispatch} from './dispatch';
-import view from './view';
+import type {Dispatch, Effect, PureView} from 'redux-elmish';
+import {view, Effects} from 'redux-elmish';
 
 // MODEL
 export type Model = number;
@@ -37,7 +37,7 @@ type Props = {
   dispatch: Dispatch<Action>
 };
 
-export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
+export const View: PureView<Props> = view(({ model, dispatch }) => (
   <div>
     <button onClick={() => dispatch({ type: 'Decrement' })}>-</button>
     <div style={countStyle}>{model}</div>

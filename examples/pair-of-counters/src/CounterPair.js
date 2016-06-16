@@ -1,9 +1,8 @@
 // @flow
 
 import React from 'react';
-import type {Dispatch} from './dispatch';
-import {forwardTo} from './dispatch';
-import view from './view';
+import type {Dispatch, Effect, PureView} from 'redux-elmish';
+import {view, Effects, forwardTo} from 'redux-elmish';
 
 import type {Model as CounterModel, Action as CounterAction} from './Counter';
 import Counter, {View as CounterView}  from './Counter';
@@ -44,7 +43,7 @@ type Props = {
 };
 
 
-export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
+export const View: PureView<Props> = view(({ model, dispatch }) => (
   <div>
     <CounterView model={model.topCounter} dispatch={forwardTo(dispatch, topAction => ({ type: 'Top', topAction }))} />
     <CounterView model={model.bottomCounter} dispatch={forwardTo(dispatch, bottomAction => ({ type: 'Bottom', bottomAction }))} />
