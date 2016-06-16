@@ -1,9 +1,8 @@
 // @flow
 
 import React from 'react';
-import type {Dispatch} from './dispatch';
-import {forwardTo} from './dispatch';
-import view from './view';
+import type {Dispatch, Effect, PureView} from 'redux-elmish';
+import {view, Effects, forwardTo} from 'redux-elmish';
 
 import type {Model as CounterModel, Action as CounterAction} from './Counter';
 import Counter, {View as CounterView}  from './Counter';
@@ -66,14 +65,19 @@ type Props = {
   dispatch: Dispatch<Action>
 };
 
+const CounterItem = ({id, model, dispatch}) => (
+  <CounterView
+    model={model}
+    dispatch={forwardTo(dispatch, counterAction => ({ type: 'Modify', id, counterAction }))}
+  />
+);
 
-export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => {
-  const counters = model.counters.map(({id, model}) => <CounterView model={model} dispatch={forwardTo(dispatch, counterAction => ({ type: 'Modify', id, counterAction }))} />);
+export const View: PureView<Props> = view(({ model, dispatch }: Props) => {
   return (
     <div>
       <button onClick={() => dispatch({ type: 'Remove' })}>Remove</button>
       <button onClick={() => dispatch({ type: 'Insert' })}>Insert</button>
-      {counters}
+      {model.counters.map(counter => <CounterItem key={counter.id} id={counter.id} model={counter.model} dispatch={dispatch} />)}
     </div>
   );
 });
