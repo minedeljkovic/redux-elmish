@@ -1,7 +1,7 @@
 {
-  "name": "tcomb-redux-elm",
+  "name": "redux-elmish",
   "version": "0.1.0",
-  "description": "The Elm Architecture in Redux using Tcomb types",
+  "description": "The Elm Architecture in Redux, statically checked using flow",
   "main": "lib/index.js",
   "files": [
     "lib",
@@ -9,7 +9,7 @@
   ],
   "jsnext:main": "src/index.js",
   "scripts": {
-    "build:lib": "./node_modules/.bin/babel src --out-dir lib",
+    "build:lib": "./node_modules/.bin/babel src --out-dir lib && cp src/index.js.flow ./lib",
     "check": "npm run lint && npm run test",
     "lint": "./node_modules/.bin/eslint src/",
     "preversion": "npm run check",
@@ -21,24 +21,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mnedeljkovic/tcomb-redux-elm.git"
+    "url": "git+https://github.com/mnedeljkovic/redux-elmish.git"
   },
   "keywords": [
     "redux",
     "elm",
-    "flux",
-    "tcomb"
+    "flux"
   ],
   "author": "Milos Nedeljkovic <dr.kiman@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mnedeljkovic/tcomb-redux-elm/issues"
+    "url": "https://github.com/mnedeljkovic/redux-elmish/issues"
   },
   "engines": {
     "node": ">=5.0.0",
     "npm": ">=3.0.0"
   },
-  "homepage": "https://github.com/mnedeljkovic/tcomb-redux-elm#readme",
+  "homepage": "https://github.com/mnedeljkovic/redux-elmish#readme",
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
@@ -57,14 +56,13 @@
     "isparta": "^4.0.0",
     "mocha": "^2.4.5",
     "react": "^15.0.2",
-    "redux-saga": "^0.10.2",
     "rimraf": "^2.5.2",
     "sinon": "^1.17.3"
   },
   "dependencies": {
-    "lodash.curry": "^4.0.1",
     "recompose": "^0.18.0",
-    "tcomb": "^3.1.0"
+    "redux": "^3.5.2",
+    "redux-loop": "^2.1.1"
   },
   "peerDependencies": {
     "react": "^15.0.2 || ^0.14.8"

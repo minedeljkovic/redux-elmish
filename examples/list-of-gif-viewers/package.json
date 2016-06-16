@@ -15,6 +15,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "mocha": "^2.2.5",
+    "react-hot-loader": "^3.0.0-beta.2",
     "webpack": "^1.12.4",
     "webpack-dev-server": "^1.12.1"
   },
@@ -24,8 +25,7 @@
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
     "recompose": "^0.18.0",
-    "redux": "^3.5.2",
-    "redux-loop": "^2.1.1"
+    "redux": "^3.5.2"
   },
   "author": "Milos Nedeljkovic <dr.kiman@gmail.com>",
   "license": "MIT"

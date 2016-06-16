@@ -1,12 +1,12 @@
-import install from './install';
-import {tag, union} from './types';
-import elmView from './view';
-import mapDispatchToAddress from './mapDispatchToAddress';
+import Effects from './effects';
+import {forwardTo} from './dispatch';
+import view from './view';
+import install, {hotReducer} from './install';
 
 export {
+  Effects,
+  forwardTo,
+  view,
   install,
-  tag,
-  union,
-  elmView,
-  mapDispatchToAddress
+  hotReducer
 };

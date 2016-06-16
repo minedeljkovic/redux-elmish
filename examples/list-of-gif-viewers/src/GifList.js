@@ -1,11 +1,8 @@
 // @flow
 
 import React from 'react';
-import type {Dispatch} from './dispatch';
-import {forwardTo} from './dispatch';
-import view from './view';
-import type {Effect} from './effects';
-import Effects from './effects';
+import type {Dispatch, Effect, PureView} from 'redux-elmish';
+import {view, Effects, forwardTo} from 'redux-elmish';
 import _unzip from 'lodash.unzip';
 
 import type {Model as GifModel, Action as GifAction} from './Gif';
@@ -99,7 +96,7 @@ type Props = {
   dispatch: Dispatch<Action>
 };
 
-export const View: Class<React$Component<void, Props, void>> = view(({ model, dispatch }: Props) => (
+export const View: PureView<Props> = view(({ model, dispatch }) => (
   <div>
     <input
       placeholder="What kind of gifs do you want?"
