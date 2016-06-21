@@ -9,23 +9,26 @@ import CounterList, {View as CounterListView} from './CounterList';
 
 const initWithFx = (init) => () => [init(), Effects.none()];
 const updateWithFx = (update) => (state, action) => [update(state, action), Effects.none()];
+
 const storeFactory = compose(
   install(initWithFx(CounterList.init)),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 const store = storeFactory(updateWithFx(CounterList.update));
+
 const renderApp = (View) => {
+  const ConnectedView = connect(appState => ({ model: appState }))(View);
+
   render((
     <AppContainer>
       <Provider store={store}>
-        {React.createElement(connect(appState => ({
-          model: appState
-        }))(View))}
+        <ConnectedView />
       </Provider>
     </AppContainer>
   ), document.getElementById('app'));
 }
 renderApp(CounterListView);
+
 if (module.hot) {
   // Enable Webpack hot module replacement for reducers
   module.hot.accept('./CounterList.js', () => {

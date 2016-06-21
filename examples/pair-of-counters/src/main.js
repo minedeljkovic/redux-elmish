@@ -17,12 +17,12 @@ const storeFactory = compose(
 const store = storeFactory(updateWithFx(CounterPair.update));
 
 const renderApp = (View) => {
+  const ConnectedView = connect(appState => ({ model: appState }))(View);
+
   render((
     <AppContainer>
       <Provider store={store}>
-        {React.createElement(connect(appState => ({
-          model: appState
-        }))(View))}
+        <ConnectedView />
       </Provider>
     </AppContainer>
   ), document.getElementById('app'));

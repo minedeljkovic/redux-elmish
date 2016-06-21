@@ -12,13 +12,14 @@ const storeFactory = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 const store = storeFactory(GifPair.update);
+
 const renderApp = (View) => {
+  const ConnectedView = connect(appState => ({ model: appState }))(View);
+
   render((
     <AppContainer>
       <Provider store={store}>
-        {React.createElement(connect(appState => ({
-          model: appState
-        }))(View))}
+        <ConnectedView />
       </Provider>
     </AppContainer>
   ), document.getElementById('app'));
