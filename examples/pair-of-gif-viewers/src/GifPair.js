@@ -20,7 +20,7 @@ export const init = (leftTopic: string = 'funny cats', rightTopic: string = 'fun
     { left, right },
     Effects.batch([
       Effects.map(leftFx, leftAction => ({ type: 'Left', leftAction })),
-      Effects.map(leftFx, rightAction => ({ type: 'Right', rightAction }))
+      Effects.map(rightFx, rightAction => ({ type: 'Right', rightAction }))
     ])
   ];
 }
