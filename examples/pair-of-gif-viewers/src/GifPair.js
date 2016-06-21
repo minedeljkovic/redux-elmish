@@ -7,14 +7,17 @@ import {view, Effects, forwardTo} from 'redux-elmish';
 import type {Model as GifModel, Action as GifAction} from './Gif';
 import Gif, {View as GifView} from './Gif';
 
+import type {Model as ActivationModel, Action as ActivationAction} from './Activation';
+import Activation, {View as ActivationView} from './Activation';
+
 // MODEL
 export type Model = {
-  left: GifModel,
+  left: ActivationModel,
   right: GifModel
 };
 
-export const init = (leftTopic: string = 'funny cats', rightTopic: string = 'funny dogs'): [Model, Effect<Action>] => {
-  const [left, leftFx] = Gif.init(leftTopic);
+export const init = (leftTopic: ?string, rightTopic: string = 'funny dogs'): [Model, Effect<Action>] => {
+  const [left, leftFx] = Activation.init(Gif.init);
   const [right, rightFx] = Gif.init(rightTopic);
   return [
     { left, right },
@@ -27,14 +30,14 @@ export const init = (leftTopic: string = 'funny cats', rightTopic: string = 'fun
 
 // UPDATE
 export type Action
-  = { type: 'Left', leftAction: GifAction }
+  = { type: 'Left', leftAction: ActivationAction }
   | { type: 'Right', rightAction: GifAction }
 ;
 
 export const update = (model: Model, action: Action): [Model, Effect<Action>] => {
   switch(action.type) {
   case 'Left': {
-    const [left, leftFx] = Gif.update(model.left, action.leftAction);
+    const [left, leftFx] = Activation.update(model.left, action.leftAction, Gif.update);
     return [
       { ...model, left },
       Effects.map(leftFx, leftAction => ({ type: 'Left', leftAction }))
@@ -60,7 +63,7 @@ type Props = {
 
 export const View: PureView<Props> = view(({ model, dispatch }) => (
   <div style={{display: 'flex'}}>
-    <GifView model={model.left} dispatch={forwardTo(dispatch, leftAction => ({ type: 'Left', leftAction }))} />
+    <ActivationView model={model.left} dispatch={forwardTo(dispatch, leftAction => ({ type: 'Left', leftAction }))} inner={GifView} />
     <GifView model={model.right} dispatch={forwardTo(dispatch, rightAction => ({ type: 'Right', rightAction }))} />
   </div>
 ));
