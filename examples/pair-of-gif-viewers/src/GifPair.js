@@ -12,12 +12,12 @@ import Activation, {View as ActivationView} from './Activation';
 
 // MODEL
 export type Model = {
-  left: ActivationModel,
+  left: ActivationModel<GifModel>,
   right: GifModel
 };
 
 export const init = (leftTopic: ?string, rightTopic: string = 'funny dogs'): [Model, Effect<Action>] => {
-  const [left, leftFx] = Activation.init(Gif.init);
+  const [left, leftFx] = Activation.init();
   const [right, rightFx] = Gif.init(rightTopic);
   return [
     { left, right },
@@ -30,14 +30,14 @@ export const init = (leftTopic: ?string, rightTopic: string = 'funny dogs'): [Mo
 
 // UPDATE
 export type Action
-  = { type: 'Left', leftAction: ActivationAction }
+  = { type: 'Left', leftAction: ActivationAction<GifAction> }
   | { type: 'Right', rightAction: GifAction }
 ;
 
 export const update = (model: Model, action: Action): [Model, Effect<Action>] => {
   switch(action.type) {
   case 'Left': {
-    const [left, leftFx] = Activation.update(model.left, action.leftAction, Gif.update);
+    const [left, leftFx] = Activation.update(model.left, action.leftAction, Gif);
     return [
       { ...model, left },
       Effects.map(leftFx, leftAction => ({ type: 'Left', leftAction }))

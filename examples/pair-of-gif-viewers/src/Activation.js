@@ -5,42 +5,67 @@ import type {Dispatch, Effect, PureView} from 'redux-elmish';
 import {view, Effects, forwardTo} from 'redux-elmish';
 
 // MODEL
-export type Model = {
-  status: 'INACTIVE' | 'ACTIVE',
-  activationText: string,
-  innerInit: (text: string) => any,
-  inner: any
-};
+type InactiveModel = { status: 'INACTIVE', activationText: string };
+type ActiveModel<InnerModel> = { status: 'ACTIVE', inner: InnerModel };
+export type Model<InnerModel> = InactiveModel | ActiveModel<InnerModel>;
 
-export const init = (innerInit: (text: string) => any): [Model, Effect<Action>] => {
+export const init = (): [InactiveModel, Effect<Action>] => {
   return [
-    { status: 'INACTIVE', activationText: '', innerInit, inner: null },
+    { status: 'INACTIVE', activationText: '' },
     Effects.none()
   ];
 }
 
 // UPDATE
-export type Action
+export type Action<InnerAction>
   = { type: 'Activate' }
   | { type: 'ChangeText', text: string }
-  | { type: 'Inner', innerAction: any }
+  | { type: 'Inner', innerAction: InnerAction }
 ;
 
-export const update = (model: Model, action: Action, innerUpdate: (innerModel: any, innerAction: any) => any): [Model, Effect<Action>] => {
+export type InnerComponent<Model, Action> = {
+  init(activationText: string): [Model, Effect<Action>];
+  update(model: Model, action: Action): [Model, Effect<Action>]
+}
+
+export function update<InnerModel, InnerAction>(model: Model, action: Action, component: InnerComponent<InnerModel, InnerAction>): [Model<InnerModel>, Effect<Action>] {
   switch(action.type) {
-  case 'ChangeText': return [
-    { ...model, activationText: action.text },
-    Effects.none()
-  ];
-  case 'Activate': {
-    const [inner, innerFx] = model.innerInit(model.activationText);
+  case 'ChangeText': {
+    if (model.status === 'ACTIVE') {
+      return [
+        model,
+        Effects.none()
+      ];
+    }
+
     return [
-      { ...model, status: 'ACTIVE', inner },
+      { ...model, activationText: action.text },
+      Effects.none()
+    ];
+  }
+  case 'Activate': {
+    if (model.status === 'ACTIVE') {
+      return [
+        model,
+        Effects.none()
+      ];
+    }
+
+    const [inner, innerFx] = component.init(model.activationText);
+    return [
+      { status: 'ACTIVE', inner },
       Effects.map(innerFx, innerAction => ({ type: 'Inner', innerAction }))
     ]
   }
   case 'Inner': {
-    const [inner, innerFx] = innerUpdate(model.inner, action.innerAction);
+    if (model.status === 'INACTIVE') {
+      return [
+        model,
+        Effects.none()
+      ];
+    }
+
+    const [inner, innerFx] = component.update(model.inner, action.innerAction);
     return [
       { ...model, inner },
       Effects.map(innerFx, innerAction => ({ type: 'Inner', innerAction }))
@@ -51,10 +76,10 @@ export const update = (model: Model, action: Action, innerUpdate: (innerModel: a
 }
 
 // VIEW
-type Props = {
-  model: Model,
-  dispatch: Dispatch<Action>,
-  inner: any // Component
+type Props<InnerModel, InnerAction> = {
+  model: Model<InnerModel>,
+  dispatch: Dispatch<Action<InnerAction>>,
+  inner: Class<React$Component<void, {model: InnerModel, dispatch: InnerAction}, void>>
 };
 
 
