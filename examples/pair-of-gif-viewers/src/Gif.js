@@ -35,19 +35,27 @@ export type Action
   | { type: 'FetchFail', error: any }
 ;
 
-const update = (model: Model, action: Action): [Model, Effect<Action>] => {
+type Result
+  = { type: 'None' }
+  | { type: 'NewGifReceived' }
+;
+
+const update = (model: Model, action: Action): [Model, Effect<Action>, Result] => {
   switch (action.type) {
   case 'MorePlease': return [
     model,
-    getRandomGif(model.topic)
+    getRandomGif(model.topic),
+    { type: 'None' }
   ];
   case 'FetchSucceed': return [
     { ...model, gifUrl: action.gifUrl },
-    Effects.none()
+    Effects.none(),
+    { type: 'NewGifReceived' }
   ]
   case 'FetchFail': return [
     model,
-    Effects.none()
+    Effects.none(),
+    { type: 'None' }
   ]
   default: throw new Error(`Unknown action type ${action.type}`);
   }

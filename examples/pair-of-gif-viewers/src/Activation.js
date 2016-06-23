@@ -23,52 +23,62 @@ export type Action<InnerAction>
   | { type: 'Inner', innerAction: InnerAction }
 ;
 
-export type InnerComponent<Model, Action> = {
+type InnerComponent<Model, Action, Result> = {
   init(activationText: string): [Model, Effect<Action>];
-  update(model: Model, action: Action): [Model, Effect<Action>]
+  update(model: Model, action: Action): [Model, Effect<Action>, Result]
 }
 
-export function update<InnerModel, InnerAction>(model: Model, action: Action, component: InnerComponent<InnerModel, InnerAction>): [Model<InnerModel>, Effect<Action>] {
+type Result<InnerResult> = {
+  inner: ?InnerResult
+}
+
+export function update<InnerModel, InnerAction, InnerResult>(model: Model, action: Action, component: InnerComponent<InnerModel, InnerAction, InnerResult>): [Model<InnerModel>, Effect<Action>, Result<InnerResult>] {
   switch(action.type) {
   case 'ChangeText': {
     if (model.status === 'ACTIVE') {
       return [
         model,
-        Effects.none()
+        Effects.none(),
+        { inner: null }
       ];
     }
 
     return [
       { ...model, activationText: action.text },
-      Effects.none()
+      Effects.none(),
+      { inner: null }
     ];
   }
   case 'Activate': {
     if (model.status === 'ACTIVE') {
       return [
         model,
-        Effects.none()
+        Effects.none(),
+        { inner: null }
       ];
     }
 
     const [inner, innerFx] = component.init(model.activationText);
     return [
       { status: 'ACTIVE', inner },
-      Effects.map(innerFx, innerAction => ({ type: 'Inner', innerAction }))
+      Effects.map(innerFx, innerAction => ({ type: 'Inner', innerAction })),
+      { inner: null }
     ]
   }
   case 'Inner': {
     if (model.status === 'INACTIVE') {
       return [
         model,
-        Effects.none()
+        Effects.none(),
+        { inner: null }
       ];
     }
 
-    const [inner, innerFx] = component.update(model.inner, action.innerAction);
+    const [inner, innerFx, innerResult] = component.update(model.inner, action.innerAction);
     return [
       { ...model, inner },
-      Effects.map(innerFx, innerAction => ({ type: 'Inner', innerAction }))
+      Effects.map(innerFx, innerAction => ({ type: 'Inner', innerAction })),
+      { inner: innerResult }
     ];
   }
   default: throw new Error(`Unknown action type ${action.type}`);
