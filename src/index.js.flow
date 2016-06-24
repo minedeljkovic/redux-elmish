@@ -31,6 +31,8 @@ export interface Effects {
   static batch<TAction>(effects: Effect<TAction>[]): Effect<TAction>
 };
 
+declare export function isEffect(object: any): boolean;
+
 export type Dispatch<TAction> = (action: TAction) => void;
 
 declare export function forwardTo<TParentAction, TChildAction>(dispatch: Dispatch<TParentAction>, map: (childAction: TChildAction) => TParentAction): Dispatch<TChildAction>;

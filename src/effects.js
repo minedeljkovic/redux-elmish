@@ -1,3 +1,9 @@
+const isEffectSymbol = Symbol('isEffect');
+
+export function isEffect(object) {
+  return object ? object[isEffectSymbol] : false;
+}
+
 function promise(
   promiseFactory,
   successTagger,
@@ -7,13 +13,15 @@ function promise(
     type: 'PROMISE',
     factory: promiseFactory,
     successTagger,
-    failTagger
+    failTagger,
+    [isEffectSymbol]: true
   };
 }
 
 function none() {
   return {
-    type: 'NONE'
+    type: 'NONE',
+    [isEffectSymbol]: true
   }
 }
 
@@ -24,14 +32,16 @@ function map(
   return {
     type: 'MAP',
     effect,
-    tagger
+    tagger,
+    [isEffectSymbol]: true
   };
 }
 
 function batch(effects) {
   return {
     type: 'BATCH',
-    effects
+    effects,
+    [isEffectSymbol]: true
   }
 }
 
