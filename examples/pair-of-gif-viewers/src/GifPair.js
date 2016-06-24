@@ -4,8 +4,8 @@ import React from 'react';
 import type {Dispatch, Effect, PureView} from 'redux-elmish';
 import {view, Effects, forwardTo} from 'redux-elmish';
 
-import type {Model as GifModel, Action as GifAction} from './Gif';
-import Gif, {View as GifView} from './Gif';
+import type {Model as GifModel, Action as GifAction} from './gif';
+import Gif, {View as GifView} from './gif';
 
 import type {Model as ActivationModel, Action as ActivationAction} from './Activation';
 import Activation, {View as ActivationView} from './Activation';

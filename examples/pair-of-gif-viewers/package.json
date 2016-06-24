@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --config webpack.config.js --port 3000 --hot --content-base ./",
+    "start:test": "./node_modules/.bin/webpack-dev-server --config webpack.config.test.js --port 3000 --hot --content-base ./",
     "test": "./node_modules/.bin/mocha --require babel-core/register --recursive --require",
     "test:watch": "npm test -- --watch"
   },
