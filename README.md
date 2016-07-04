@@ -21,12 +21,3 @@ Full hot reload and time travel compatibility. Keeping it that way is of **high 
 
 ## How to use?
 Please check the famous Elm nesting [examples](./examples)
-
-## Package?
-At the moment this is just an experiment, so if you would like to play with [examples](./examples) use [npm link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears):
-
-```
-npm run build:lib
-npm link
-/examples/pair-of-counters/ npm link redux-elmish
-```
