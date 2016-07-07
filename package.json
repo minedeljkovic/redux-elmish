@@ -1,6 +1,6 @@
 {
   "name": "redux-elmish",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Elm Architecture in Redux, statically checked using flow",
   "main": "lib/index.js",
   "files": [
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mnedeljkovic/redux-elmish.git"
+    "url": "git+https://github.com/minedeljkovic/redux-elmish.git"
   },
   "keywords": [
     "redux",
@@ -31,13 +31,13 @@
   "author": "Milos Nedeljkovic <dr.kiman@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mnedeljkovic/redux-elmish/issues"
+    "url": "https://github.com/minedeljkovic/redux-elmish/issues"
   },
   "engines": {
     "node": ">=5.0.0",
     "npm": ">=3.0.0"
   },
-  "homepage": "https://github.com/mnedeljkovic/redux-elmish#readme",
+  "homepage": "https://github.com/minedeljkovic/redux-elmish#readme",
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
