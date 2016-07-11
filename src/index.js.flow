@@ -1,9 +1,9 @@
 // @flow
 
-export type PromiseEffect<TAction> = {
+export type PromiseEffect<TAction, TPromiseResult> = {
   type: 'PROMISE',
-  factory: () => Promise,
-  successTagger: (result: any) => TAction,
+  factory: () => Promise<TPromiseResult>,
+  successTagger: (result: TPromiseResult) => TAction,
   failTagger: (error: any) => TAction
 };
 
@@ -11,10 +11,10 @@ export type NoneEffect = {
   type: 'NONE'
 };
 
-export type MappedEffect<TAction> = {
+export type MappedEffect<TAction, TTaggedAction> = {
   type: 'MAP',
-  effect: Effect,
-  tagger: (action: any) => TAction
+  effect: Effect<TTaggedAction>,
+  tagger: (action: TTaggedAction) => TAction
 };
 
 export type BatchEffect<TAction> = {
@@ -22,7 +22,7 @@ export type BatchEffect<TAction> = {
   effects: Effect<TAction>[]
 };
 
-export type Effect<TAction> = PromiseEffect<TAction> | NoneEffect | MappedEffect<TAction> | BatchEffect<TAction>;
+export type Effect<TAction> = PromiseEffect<TAction, *> | NoneEffect | MappedEffect<TAction, *> | BatchEffect<TAction>;
 
 export interface Effects {
   static promise<TAction, TPromiseResult>(promiseFactory: () => Promise<TPromiseResult>, successTagger: (result: TPromiseResult) => TAction, failTagger: (error: any) => TAction): Effect<TAction>,
@@ -39,4 +39,4 @@ declare export function forwardTo<TParentAction, TChildAction>(dispatch: Dispatc
 
 export type PureView<Props> = Class<React$Component<void, Props, void>>;
 
-declare export function view<Props>(ViewComponent: (props: Props) => React$Element): PureView<Props>;
+declare export function view<Props>(ViewComponent: (props: Props) => React$Element<*>): PureView<Props>;
