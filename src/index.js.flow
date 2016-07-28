@@ -39,4 +39,10 @@ declare export function forwardTo<TParentAction, TChildAction>(dispatch: Dispatc
 
 export type PureView<Props> = Class<React$Component<void, Props, void>>;
 
-declare export function view<Props>(ViewComponent: (props: Props) => React$Element<*>): PureView<Props>;
+type ViewClass = <D, P, C: React$Component<D, P, any>>(
+  Komponent: Class<C>
+) => Class<React$Component<D, P, any>>;
+
+type ViewStateless = <P>(component: (props: P) => any) => PureView<P>;
+
+declare export var view: ViewStateless & ViewClass;
