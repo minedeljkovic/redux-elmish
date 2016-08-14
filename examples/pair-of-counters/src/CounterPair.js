@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type {Dispatch, Effect, PureView} from 'redux-elmish';
-import {view, Effects, forwardTo} from 'redux-elmish';
+import {view, Effects, forwardTo, assertNever} from 'redux-elmish';
 
 import type {Model as CounterModel, Action as CounterAction} from './Counter';
 import Counter, {View as CounterView}  from './Counter';
@@ -32,7 +32,7 @@ function update(model: Model, action: Action): Model {
   case 'Reset': return init(0, 0);
   case 'Top': return {...model, topCounter: Counter.update(model.topCounter, action.topAction)};
   case 'Bottom': return {...model, bottomCounter: Counter.update(model.bottomCounter, action.bottomAction)};
-  default: throw new Error(`Unknown action type ${action.type}`);
+  default: return assertNever(action.type);
   }
 }
 

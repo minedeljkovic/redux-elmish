@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type {Dispatch, Effect, PureView} from 'redux-elmish';
-import {view, Effects} from 'redux-elmish';
+import {view, Effects, assertNever} from 'redux-elmish';
 
 // MODEL
 export type Model = {
@@ -49,7 +49,7 @@ const update = (model: Model, action: Action): [Model, Effect<Action>] => {
     model,
     Effects.none()
   ]
-  default: throw new Error(`Unknown action type ${action.type}`);
+  default: return assertNever(action.type);
   }
 }
 

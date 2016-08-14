@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type {Dispatch, Effect, PureView} from 'redux-elmish';
-import {view, Effects, forwardTo} from 'redux-elmish';
+import {view, Effects, forwardTo, assertNever} from 'redux-elmish';
 
 import type {Model as GifModel, Action as GifAction} from './Gif';
 import Gif, {View as GifView} from './Gif';
@@ -47,7 +47,7 @@ export const update = (model: Model, action: Action): [Model, Effect<Action>] =>
       Effects.map(rightFx, rightAction => ({ type: 'Right', rightAction }))
     ];
   }
-  default: throw new Error(`Unknown action type ${action.type}`);
+  default: return assertNever(action.type);
   }
 }
 

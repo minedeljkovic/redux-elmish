@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type {Dispatch, Effect, PureView} from 'redux-elmish';
-import {view, Effects, forwardTo} from 'redux-elmish';
+import {view, Effects, forwardTo, assertNever} from 'redux-elmish';
 
 import type {Model as CounterModel, Action as CounterAction} from './Counter';
 import Counter, {View as CounterView}  from './Counter';
@@ -55,7 +55,7 @@ const update = (model: Model, action: Action): Model => {
     ...model,
     counters: counters.map(updateHelp(action.id, action.counterAction))
   };
-  default: throw new Error(`Unknown action type ${action.type}`);
+  default: return assertNever(action.type);
   }
 }
 

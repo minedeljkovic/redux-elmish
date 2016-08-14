@@ -25,7 +25,7 @@
     "react-redux": "^4.4.5",
     "recompose": "^0.18.0",
     "redux": "^3.5.2",
-    "redux-elmish": "^0.1.0"
+    "redux-elmish": "^0.2.0"
   },
   "author": "Milos Nedeljkovic <dr.kiman@gmail.com>",
   "license": "MIT"
