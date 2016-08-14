@@ -1,5 +1,7 @@
 // @flow
 
+declare export function assertNever(impossible: 'never' & 'empty'): any;
+
 export type PromiseEffect<TAction, TPromiseResult> = {
   type: 'PROMISE',
   factory: () => Promise<TPromiseResult>,
