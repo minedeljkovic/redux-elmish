@@ -8,8 +8,10 @@ Following parts are statically type checked with flow:
 1. init and update functions input and result
 2. view props
 3. action creation, both on view events and effects results (tagged action creation is also checked, when composing views and effects). This is achieved with [disjoint union](https://flowtype.org/docs/disjoint-unions.html#_)
-
 ![static-typing](./docs/action-creators-typings.png)
+
+4. action type exhaustiveness checking
+![static-typing](./docs/action-type-exhaustive.png)
 
 ## Effect handling
 Slight variation implemented on top of [redux-loop](https://github.com/raisemarketplace/redux-loop), so it can be statically type-checked.
