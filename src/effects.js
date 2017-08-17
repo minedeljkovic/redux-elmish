@@ -22,7 +22,7 @@ function none() {
   return {
     type: 'NONE',
     [isEffectSymbol]: true
-  }
+  };
 }
 
 function map(
@@ -42,7 +42,7 @@ function batch(effects) {
     type: 'BATCH',
     effects,
     [isEffectSymbol]: true
-  }
+  };
 }
 
 export default {
@@ -50,4 +50,4 @@ export default {
   none,
   map,
   batch
-}
+};

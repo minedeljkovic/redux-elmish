@@ -1,9 +1,9 @@
 import React from 'react';
 import shallowEqual from 'recompose/shallowEqual';
-import createElement from 'recompose/createElement';
+// import createElement from 'recompose/createElement';
 import getDisplayName from 'recompose/getDisplayName';
 
-export default function(ViewComponent) {
+export default function (ViewComponent) {
   class View extends React.Component {
     constructor(props) {
       super(props);
@@ -12,13 +12,13 @@ export default function(ViewComponent) {
     }
 
     shouldComponentUpdate(nextProps) {
-      return Object.keys(this.props).some(prop => {
+      return Object.keys(this.props).some(prop => { // eslint-disable-line arrow-body-style
         return (prop !== 'dispatch' && !shallowEqual(this.props[prop], nextProps[prop]));
       });
     }
 
     dispatch(action) {
-      this.props.dispatch(action);
+      this.props.dispatch(action); // eslint-disable-line react/prop-types
     }
 
     /*
@@ -30,7 +30,7 @@ export default function(ViewComponent) {
     */
 
     render() {
-      return <ViewComponent {...this.props} dispatch={this.dispatch} />
+      return <ViewComponent {...this.props} dispatch={this.dispatch} />;
       /*
       return createElement(BaseComponent, {
         ...this.props,

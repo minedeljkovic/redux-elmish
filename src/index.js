@@ -1,7 +1,7 @@
-import Effects, {isEffect} from './effects';
-import {forwardTo} from './dispatch';
+import Effects, { isEffect } from './effects';
+import { forwardTo } from './dispatch';
 import view from './view';
-import install, {hotReducer} from './install';
+import install, { hotReducer } from './install';
 import assertNever from './assertNever';
 
 export {
