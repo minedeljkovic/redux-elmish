@@ -1,6 +1,6 @@
 // @flow
 
-declare export function assertNever(impossible: 'never' & 'empty'): any;
+declare export function assertNever<T>(impossible: empty): T;
 
 export type PromiseEffect<TAction, TPromiseResult> = {
   type: 'PROMISE',
@@ -39,11 +39,11 @@ export type Dispatch<TAction> = (action: TAction) => void;
 
 declare export function forwardTo<TParentAction, TChildAction>(dispatch: Dispatch<TParentAction>, map: (childAction: TChildAction) => TParentAction): Dispatch<TChildAction>;
 
-export type PureView<Props> = Class<React$Component<void, Props, void>>;
+export type PureView<Props> = Class<React$Component<Props, void>>;
 
-type ViewClass = <D, P, C: React$Component<D, P, any>>(
+type ViewClass = <P, C: React$Component<P, any>>(
   Komponent: Class<C>
-) => Class<React$Component<D, P, any>>;
+) => Class<React$Component<P, any>>;
 
 type ViewStateless = <P>(component: (props: P) => any) => PureView<P>;
 
