@@ -26,11 +26,11 @@ export type BatchEffect<TAction> = {
 
 export type Effect<TAction> = PromiseEffect<TAction, *> | NoneEffect | MappedEffect<TAction, *> | BatchEffect<TAction>;
 
-export interface Effects {
-  static promise<TAction, TPromiseResult>(promiseFactory: () => Promise<TPromiseResult>, successTagger: (result: TPromiseResult) => TAction, failTagger: (error: any) => TAction): Effect<TAction>,
-  static none(): NoneEffect,
-  static map<TAction, TTagAction>(effect: Effect<TAction>, tagger: (action: TAction) => TTagAction): Effect<TTagAction>,
-  static batch<TAction>(effects: Effect<TAction>[]): Effect<TAction>
+declare export var Effects: {
+  promise: <TAction, TPromiseResult>(promiseFactory: () => Promise<TPromiseResult>, successTagger: (result: TPromiseResult) => TAction, failTagger: (error: any) => TAction) => Effect<TAction>,
+  none: () => NoneEffect,
+  map: <TAction, TTagAction>(effect: Effect<TAction>, tagger: (action: TAction) => TTagAction) => Effect<TTagAction>,
+  batch: <TAction>(effects: Effect<TAction>[]) => Effect<TAction>
 };
 
 declare export function isEffect(object: any): boolean;
