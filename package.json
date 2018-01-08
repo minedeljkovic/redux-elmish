@@ -10,14 +10,12 @@
   "jsnext:main": "src/index.js",
   "scripts": {
     "build:lib": "./node_modules/.bin/babel src --out-dir lib && cp src/index.js.flow ./lib",
-    "check": "npm run lint && npm run test",
+    "check": "npm run lint",
     "lint": "./node_modules/.bin/eslint src/",
     "preversion": "npm run check",
     "version": "npm run build:lib",
     "postversion": "git push && git push --tags",
-    "prepublish": "npm run build:lib",
-    "test": "./node_modules/.bin/mocha --require babel-core/register --recursive",
-    "test:watch": "npm test -- --watch"
+    "prepublish": "npm run build:lib"
   },
   "repository": {
     "type": "git",
